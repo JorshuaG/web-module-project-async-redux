@@ -1,27 +1,33 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
-import { clearPokemon } from "../actions/pokeActions";
+import {
+  clearPokemon,
+  fetchChar,
+  fetchBulb,
+  fetchSqui,
+} from "../actions/pokeActions";
 
 function Pokemon(props) {
   const { push } = useHistory();
-  console.log("pokemon data on pokemon card", props.pokemon);
+  const pokemon = props.pokemon;
+
   const handleReturn = () => {
-    props.clearPokemon();
     push("/");
   };
 
   return (
     <div>
-      <h2>{props.pokemon[0].name}</h2>
+      <h2>{pokemon.species.name}</h2>
       <div>
         <div>
-          <img src={props.pokemon[0].sprites.front_default} />
+          <img src={pokemon.sprites.front_default} />
         </div>
         <div>
-          <p>ID: {props.pokemon[0].id}</p>
-          <p>Ability: "{props.pokemon[0].abilities[0].ability.name}"</p>
-          <p>Weight: {props.pokemon[0].weight}</p>
+          <p>ID: {pokemon.id}</p>
+          <p>Ability: "{pokemon.abilities[0].ability.name}"</p>
+          <p>Weight: {pokemon.weight}</p>
         </div>
       </div>
       <button onClick={handleReturn}>Return to Search</button>
@@ -31,4 +37,9 @@ function Pokemon(props) {
 const mapStateToProps = (state) => {
   return { pokemon: state.pokemon };
 };
-export default connect(mapStateToProps, { clearPokemon })(Pokemon);
+export default connect(mapStateToProps, {
+  clearPokemon,
+  fetchSqui,
+  fetchBulb,
+  fetchChar,
+})(Pokemon);

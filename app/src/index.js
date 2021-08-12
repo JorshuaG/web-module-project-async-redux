@@ -9,7 +9,7 @@ import logger from "redux-logger";
 import thunk from "redux-thunk";
 import { reducer } from "./reducers/pokeReducer";
 
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(thunk, logger));
 
 ReactDOM.render(
   <Provider store={store}>

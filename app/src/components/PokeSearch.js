@@ -3,45 +3,50 @@ import React from "react";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
-import { fetchPokemon } from "../actions/pokeActions";
+import {
+  addPokemon,
+  fetchBulb,
+  fetchChar,
+  fetchSqui,
+} from "../actions/pokeActions";
 
 function PokeSearch(props) {
   const { push } = useHistory();
-  const [poke, setPoke] = useState({ poke: "" });
 
-  const handleChange = (e) => {
-    setPoke({ ...poke, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = () => {
-    axios
-
-      .get(`https://pokeapi.co/api/v2/pokemon/${poke.poke}`)
-      .then((res) => {
-        console.log(res.data);
-        props.fetchPokemon(res.data);
-      })
-      .catch((err) => {
-        console.log("error after submit", err);
-      });
-    setPoke({ ...poke, poke: "" });
+  const handleChar = () => {
+    props.fetchChar();
     push("/pokemon");
   };
+  const handleSqui = () => {
+    props.fetchSqui();
+    push("/pokemon");
+  };
+  const handleBulb = () => {
+    props.fetchBulb();
+    push("/pokemon");
+  };
+
   console.log(props.pokemon);
   return (
     <div>
-      <form onSubmit={() => handleSubmit()}>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/512px-Pok%C3%A9_Ball_icon.svg.png" />
-        <input onChange={handleChange} name="poke" type="text"></input>
-
-        <button>Search</button>
-      </form>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/512px-Pok%C3%A9_Ball_icon.svg.png" />
+      <div>
+        <button onClick={() => handleChar()}>Choose Charmander</button>
+        <button onClick={() => handleSqui()}>Choose Squirtle</button>
+        <button onClick={() => handleBulb()}>Choose Bulbasaur</button>
+      </div>
     </div>
   );
 }
 const mapStateToProps = (state) => {
   return {
     pokemon: state.pokemon,
+    searchedPokemon: state.searchedPokemon,
   };
 };
-export default connect(mapStateToProps, { fetchPokemon })(PokeSearch);
+export default connect(mapStateToProps, {
+  addPokemon,
+  fetchSqui,
+  fetchChar,
+  fetchBulb,
+})(PokeSearch);
